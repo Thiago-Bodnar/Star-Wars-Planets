@@ -8,11 +8,16 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
 
+  const handleFilterInput = ({ target }) => {
+    setFilterByName({ name: target.value });
+  };
+
   const contextValue = {
     data,
     setData,
     filterByName,
     setFilterByName,
+    handleFilterInput,
   };
 
   useEffect(() => {

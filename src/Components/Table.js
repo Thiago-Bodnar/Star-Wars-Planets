@@ -2,14 +2,22 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { data, filterByName, setFilterByName } = useContext(AppContext);
-  const handleChange = ({ target }) => {
-    setFilterByName({ name: target.value });
-  };
-
+  const { data, filterByName, handleFilterInput } = useContext(AppContext);
+  const filterPlanets = data
+    .filter((planet) => planet.name.toLowerCase()
+      .includes(filterByName.name.toLowerCase()));
   return (
     <div>
-      <input value={ filterByName.name } type="text" onChange={ handleChange } />
+      <label htmlFor="filterInput">
+        Pesquisar Planetas
+        <input
+          id="filterInput"
+          value={ filterByName.name }
+          data-testid="name-filter"
+          type="text"
+          onChange={ handleFilterInput }
+        />
+      </label>
       <table>
         <thead>
           <tr>
@@ -30,7 +38,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            data.map((planet) => (
+            filterPlanets.map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>
