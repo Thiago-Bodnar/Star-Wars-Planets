@@ -5,7 +5,7 @@ import AppContext from './AppContext';
 const URL = 'https://swapi-trybe.herokuapp.com/api/planets';
 
 function Provider({ children }) {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
 
   const contextValue = {
     data,
@@ -16,8 +16,7 @@ function Provider({ children }) {
     const fetchData = async () => {
       const request = await fetch(URL);
       const { results } = await request.json();
-      const planets = results.filter((planet) => !planet.residents);
-      setData(planets);
+      setData(results);
     };
     fetchData();
   }, []);
