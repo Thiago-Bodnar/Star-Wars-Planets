@@ -7,9 +7,14 @@ const URL = 'https://swapi-trybe.herokuapp.com/api/planets';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   const handleFilterInput = ({ target }) => {
     setFilterByName({ name: target.value });
+  };
+
+  const numericFilter = (newFilter) => {
+    setFilterByNumericValues([...filterByNumericValues, newFilter]);
   };
 
   const contextValue = {
@@ -18,6 +23,9 @@ function Provider({ children }) {
     filterByName,
     setFilterByName,
     handleFilterInput,
+    filterByNumericValues,
+    setFilterByNumericValues,
+    numericFilter,
   };
 
   useEffect(() => {

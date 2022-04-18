@@ -2,22 +2,18 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { data, filterByName, handleFilterInput } = useContext(AppContext);
+  const {
+    data,
+    filterByName,
+  } = useContext(AppContext);
+
   const filterPlanets = data
     .filter((planet) => planet.name.toLowerCase()
       .includes(filterByName.name.toLowerCase()));
+
   return (
     <div>
-      <label htmlFor="filterInput">
-        Pesquisar Planetas
-        <input
-          id="filterInput"
-          value={ filterByName.name }
-          data-testid="name-filter"
-          type="text"
-          onChange={ handleFilterInput }
-        />
-      </label>
+
       <table>
         <thead>
           <tr>
