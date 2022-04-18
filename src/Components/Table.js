@@ -4,12 +4,7 @@ import AppContext from '../context/AppContext';
 function Table() {
   const {
     data,
-    filterByName,
   } = useContext(AppContext);
-
-  const filterPlanets = data
-    .filter((planet) => planet.name.toLowerCase()
-      .includes(filterByName.name.toLowerCase()));
 
   return (
     <div>
@@ -34,7 +29,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            filterPlanets.map((planet) => (
+            data.map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>

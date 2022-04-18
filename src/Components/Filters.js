@@ -60,9 +60,9 @@ function Filters() {
             value={ comparison }
             onChange={ handleFilterForm }
           >
-            <option value="menor que">Menor que</option>
-            <option value="igual a">Igual a</option>
-            <option value="maior que">Maior que</option>
+            <option value="maior que">maior que</option>
+            <option value="igual a">igual a</option>
+            <option value="menor que">menor que</option>
           </select>
         </label>
         <label htmlFor="value">
