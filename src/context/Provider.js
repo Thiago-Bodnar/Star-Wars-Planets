@@ -9,7 +9,6 @@ function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState(0);
 
   const handleFilterInput = ({ target }) => {
     setFilterByName({ name: target.value });
@@ -29,8 +28,6 @@ function Provider({ children }) {
     filterByNumericValues,
     setFilterByNumericValues,
     numericFilter,
-    setCurrentFilter,
-    currentFilter,
   };
 
   useEffect(() => {
@@ -79,7 +76,7 @@ function Provider({ children }) {
 
   useEffect(() => {
     filterNumber();
-  }, [currentFilter, filterByNumericValues, filterNumber, planets]);
+  }, [filterByNumericValues, filterNumber, planets]);
 
   return (
     <AppContext.Provider value={ contextValue }>

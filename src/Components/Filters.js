@@ -6,15 +6,20 @@ function Filters() {
     handleFilterInput,
     filterByName,
     numericFilter,
-    setCurrentFilter,
-    currentFilter,
-    filterByNumericValues,
   } = useContext(AppContext);
   const [inputValues, setInputValues] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
+
+  const [columnFilter, setColumnFilter] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const handleFilterForm = ({ target }) => {
     const { name, value } = target;
@@ -27,9 +32,8 @@ function Filters() {
   const { column, comparison, value } = inputValues;
 
   const handleFilterButton = () => {
-    if (filterByNumericValues.length !== 0) {
-      setCurrentFilter(currentFilter + 1);
-    }
+    const filteredColumn = columnFilter.filter((columnOption) => columnOption !== column);
+    setColumnFilter(filteredColumn);
     numericFilter({ column, comparison, value: Number(value) });
   };
 
@@ -55,11 +59,11 @@ function Filters() {
             value={ column }
             onChange={ handleFilterForm }
           >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            {
+              columnFilter.map((columnOption) => (
+                <option key={ columnOption }>{ columnOption }</option>
+              ))
+            }
           </select>
         </label>
         <label htmlFor="comparison">
