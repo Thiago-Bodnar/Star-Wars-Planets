@@ -9,6 +9,13 @@ function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [columnFilter, setColumnFilter] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const handleFilterInput = ({ target }) => {
     setFilterByName({ name: target.value });
@@ -28,6 +35,8 @@ function Provider({ children }) {
     filterByNumericValues,
     setFilterByNumericValues,
     numericFilter,
+    columnFilter,
+    setColumnFilter,
   };
 
   useEffect(() => {
@@ -49,7 +58,7 @@ function Provider({ children }) {
     filterName();
   }, [filterByName.name, planets]);
 
-  // declara a função filterNumber usando o hook useCallBack, para diminuir a complexidade do useEffect
+  // declara a função filterNumber usando o hook useCallback, para diminuir a complexidade do useEffect
 
   const filterNumber = useCallback(
     () => {
@@ -70,6 +79,8 @@ function Provider({ children }) {
       if (filterByNumericValues.length !== 0) {
         const newData = filterByNumericValues.reduce(reduceFunc, []);
         setData(newData);
+      } else {
+        setData(planets);
       }
     }, [filterByNumericValues, planets],
   );

@@ -1,104 +1,61 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Filters() {
   const {
-    handleFilterInput,
-    filterByName,
-    numericFilter,
+    filterByNumericValues,
+    setFilterByNumericValues,
+    columnFilter,
+    setColumnFilter,
   } = useContext(AppContext);
-  const [inputValues, setInputValues] = useState({
-    column: 'population',
-    comparison: 'maior que',
-    value: 0,
-  });
 
-  const [columnFilter, setColumnFilter] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ]);
-
-  const handleFilterForm = ({ target }) => {
-    const { name, value } = target;
-    setInputValues({
-      ...inputValues,
-      [name]: value,
-    });
+  const handleRemoveFilter = ({ target }) => {
+    const column = target.value;
+    const removeFilter = filterByNumericValues
+      .filter((filter) => filter.column !== column);
+    setFilterByNumericValues(removeFilter);
+    setColumnFilter([...columnFilter, column]);
   };
 
-  const { column, comparison, value } = inputValues;
-
-  const handleFilterButton = () => {
-    const filteredColumn = columnFilter.filter((columnOption) => columnOption !== column);
-    setColumnFilter(filteredColumn);
-    numericFilter({ column, comparison, value: Number(value) });
+  const handleRemoveAllFilters = () => {
+    setFilterByNumericValues([]);
+    setColumnFilter([
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ]);
   };
 
   return (
-    <>
-      <label htmlFor="filterInput">
-        Pesquisar Planetas
-        <input
-          id="filterInput"
-          value={ filterByName.name }
-          data-testid="name-filter"
-          type="text"
-          onChange={ handleFilterInput }
-        />
-      </label>
-      <form>
-        <label htmlFor="column">
-          Coluna
-          <select
-            id="column"
-            data-testid="column-filter"
-            name="column"
-            value={ column }
-            onChange={ handleFilterForm }
-          >
-            {
-              columnFilter.map((columnOption) => (
-                <option key={ columnOption }>{ columnOption }</option>
-              ))
-            }
-          </select>
-        </label>
-        <label htmlFor="comparison">
-          <select
-            id="comparison"
-            data-testid="comparison-filter"
-            name="comparison"
-            value={ comparison }
-            onChange={ handleFilterForm }
-          >
-            <option value="maior que">maior que</option>
-            <option value="igual a">igual a</option>
-            <option value="menor que">menor que</option>
-          </select>
-        </label>
-        <label htmlFor="value">
-          <input
-            type="number"
-            id="value"
-            data-testid="value-filter"
-            name="value"
-            value={ value }
-            onChange={ handleFilterForm }
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="button-filter"
-          onClick={ handleFilterButton }
-        >
-          Filtrar
+    <section>
+      {
+        filterByNumericValues.length > 0
+        && filterByNumericValues.map((filter) => (
+          <div key={ filter.column } data-testid="filter">
+            <p>
+              {`${filter.column} ${filter.comparison} ${filter.value}`}
+            </p>
+            <button
+              value={ filter.column }
+              onClick={ handleRemoveFilter }
+              type="button"
+            >
+              X
 
-        </button>
-      </form>
-    </>
+            </button>
+          </div>
+        ))
+      }
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ handleRemoveAllFilters }
+      >
+        Remover Filtros
+      </button>
+    </section>
   );
 }
 
