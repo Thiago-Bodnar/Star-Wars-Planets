@@ -2,7 +2,14 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function Filters() {
-  const { handleFilterInput, filterByName, numericFilter } = useContext(AppContext);
+  const {
+    handleFilterInput,
+    filterByName,
+    numericFilter,
+    setCurrentFilter,
+    currentFilter,
+    filterByNumericValues,
+  } = useContext(AppContext);
   const [inputValues, setInputValues] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -20,6 +27,9 @@ function Filters() {
   const { column, comparison, value } = inputValues;
 
   const handleFilterButton = () => {
+    if (filterByNumericValues.length !== 0) {
+      setCurrentFilter(currentFilter + 1);
+    }
     numericFilter({ column, comparison, value: Number(value) });
   };
 

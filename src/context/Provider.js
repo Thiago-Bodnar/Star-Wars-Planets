@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import AppContext from './AppContext';
 
 const URL = 'https://swapi-trybe.herokuapp.com/api/planets';
@@ -9,6 +9,7 @@ function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState(0);
 
   const handleFilterInput = ({ target }) => {
     setFilterByName({ name: target.value });
@@ -28,6 +29,8 @@ function Provider({ children }) {
     filterByNumericValues,
     setFilterByNumericValues,
     numericFilter,
+    setCurrentFilter,
+    currentFilter,
   };
 
   useEffect(() => {
@@ -49,20 +52,34 @@ function Provider({ children }) {
     filterName();
   }, [filterByName.name, planets]);
 
+  // declara a função filterNumber usando o hook useCallBack, para diminuir a complexidade do useEffect
+
+  const filterNumber = useCallback(
+    () => {
+      const reduceFunc = (acc, { column, comparison, value }, index) => {
+        const filterFunc = (planet) => {
+          if (filterByNumericValues.length === 0) return true;
+          const comparisonValue = Number(planet[column]);
+          if (comparison === 'menor que') return comparisonValue < value;
+          if (comparison === 'maior que') return comparisonValue > value;
+          return comparisonValue === value;
+        };
+        if (index === 0) {
+          acc = planets.filter(filterFunc);
+          return acc;
+        }
+        return acc.filter(filterFunc);
+      };
+      if (filterByNumericValues.length !== 0) {
+        const newData = filterByNumericValues.reduce(reduceFunc, []);
+        setData(newData);
+      }
+    }, [filterByNumericValues, planets],
+  );
+
   useEffect(() => {
-    const filterNumber = () => {
-      const newData = planets.filter((planet) => {
-        if (filterByNumericValues.length === 0) return true;
-        const { column, comparison, value } = filterByNumericValues[0];
-        const comparisonValue = Number(planet[column]);
-        if (comparison === 'menor que') return comparisonValue < value;
-        if (comparison === 'maior que') return comparisonValue > value;
-        return comparisonValue === value;
-      });
-      setData(newData);
-    };
     filterNumber();
-  }, [filterByNumericValues, planets]);
+  }, [currentFilter, filterByNumericValues, filterNumber, planets]);
 
   return (
     <AppContext.Provider value={ contextValue }>
