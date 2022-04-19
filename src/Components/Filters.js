@@ -4,23 +4,23 @@ import AppContext from '../context/AppContext';
 function Filters() {
   const { handleFilterInput, filterByName, numericFilter } = useContext(AppContext);
   const [inputValues, setInputValues] = useState({
-    column: '',
-    comparison: '',
+    column: 'population',
+    comparison: 'maior que',
     value: 0,
   });
 
   const handleFilterForm = ({ target }) => {
-    const { name } = target;
+    const { name, value } = target;
     setInputValues({
       ...inputValues,
-      [name]: target.value,
+      [name]: value,
     });
   };
 
   const { column, comparison, value } = inputValues;
 
   const handleFilterButton = () => {
-    numericFilter({ column, comparison, value });
+    numericFilter({ column, comparison, value: Number(value) });
   };
 
   return (

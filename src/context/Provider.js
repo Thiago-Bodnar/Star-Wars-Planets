@@ -57,7 +57,7 @@ function Provider({ children }) {
         const comparisonValue = Number(planet[column]);
         if (comparison === 'menor que') return comparisonValue < value;
         if (comparison === 'maior que') return comparisonValue > value;
-        return comparisonValue === Number(value);
+        return comparisonValue === value;
       });
       setData(newData);
     };
