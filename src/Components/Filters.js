@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function Filters() {
@@ -7,7 +7,13 @@ function Filters() {
     setFilterByNumericValues,
     columnFilter,
     setColumnFilter,
+    setOrder,
   } = useContext(AppContext);
+
+  const [sortColumn, setSortColumn] = useState({
+    column: 'population',
+    sort: 'ASC',
+  });
 
   const handleRemoveFilter = ({ target }) => {
     const column = target.value;
@@ -15,6 +21,25 @@ function Filters() {
       .filter((filter) => filter.column !== column);
     setFilterByNumericValues(removeFilter);
     setColumnFilter([...columnFilter, column]);
+  };
+
+  const { column, sort } = sortColumn;
+
+  const handleSortFilter = ({ target }) => {
+    const { name, value } = target;
+    setSortColumn({
+      ...sortColumn,
+      [name]: value,
+    });
+  };
+
+  const handleSetOrder = () => {
+    setOrder({
+      order: {
+        column,
+        sort,
+      },
+    });
   };
 
   const handleRemoveAllFilters = () => {
@@ -48,6 +73,54 @@ function Filters() {
           </div>
         ))
       }
+      <label htmlFor="columnSort">
+        Ordenar
+        <select
+          id="columnSort"
+          data-testid="column-sort"
+          name="column"
+          value={ column }
+          onChange={ handleSortFilter }
+        >
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+      </label>
+      <div>
+        <label htmlFor="asc">
+          Crescente
+          <input
+            type="radio"
+            id="asc"
+            name="sort"
+            data-testid="column-sort-input-asc"
+            value="ASC"
+            onClick={ handleSortFilter }
+          />
+        </label>
+        <label htmlFor="desc">
+          Decrescente
+          <input
+            type="radio"
+            id="desc"
+            name="sort"
+            data-testid="column-sort-input-asc"
+            value="DESC"
+            onClick={ handleSortFilter }
+          />
+        </label>
+      </div>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ handleSetOrder }
+      >
+        Ordenar
+
+      </button>
       <button
         type="button"
         data-testid="button-remove-filters"

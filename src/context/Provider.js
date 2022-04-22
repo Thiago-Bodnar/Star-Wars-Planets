@@ -16,6 +16,12 @@ function Provider({ children }) {
     'rotation_period',
     'surface_water',
   ]);
+  const [order, setOrder] = useState({
+    order: {
+      column: 'population',
+      sort: 'ASC',
+    },
+  });
 
   const handleFilterInput = ({ target }) => {
     setFilterByName({ name: target.value });
@@ -37,6 +43,8 @@ function Provider({ children }) {
     numericFilter,
     columnFilter,
     setColumnFilter,
+    order,
+    setOrder,
   };
 
   useEffect(() => {
