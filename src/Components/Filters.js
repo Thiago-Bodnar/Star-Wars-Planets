@@ -107,7 +107,7 @@ function Filters() {
             type="radio"
             id="desc"
             name="sort"
-            data-testid="column-sort-input-asc"
+            data-testid="column-sort-input-desc"
             value="DESC"
             onClick={ handleSortFilter }
           />

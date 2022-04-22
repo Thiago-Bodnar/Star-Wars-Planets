@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
+import { ascSorter, descSorter, nameSorter } from '../helpers';
 import AppContext from './AppContext';
 
 const URL = 'https://swapi-trybe.herokuapp.com/api/planets';
@@ -51,6 +52,7 @@ function Provider({ children }) {
     const fetchData = async () => {
       const request = await fetch(URL);
       const { results } = await request.json();
+      results.sort(nameSorter);
       setData(results);
       setPlanets(results);
     };
@@ -91,6 +93,28 @@ function Provider({ children }) {
         setData(planets);
       }
     }, [filterByNumericValues, planets],
+  );
+
+  useEffect(
+    () => {
+      const { column, sort } = order.order;
+      const sorter = () => {
+        const mappedSortData = planets.map((planet, index) => ({
+          value: planet[column],
+          index,
+        }));
+        if (sort === 'ASC') mappedSortData.sort(ascSorter);
+        if (sort === 'DESC') mappedSortData.sort(descSorter);
+        const orderedData = mappedSortData.map(({ index }) => planets[index]);
+        const knownPlanets = orderedData.filter((planet) => planet[column] !== 'unknown');
+
+        const unknownPlanets = orderedData
+          .filter((planet) => planet[column] === 'unknown');
+
+        setData([...knownPlanets, ...unknownPlanets]);
+      };
+      sorter();
+    }, [planets, order],
   );
 
   useEffect(() => {

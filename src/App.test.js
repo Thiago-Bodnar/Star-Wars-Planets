@@ -381,7 +381,7 @@ describe('5 - Não utilize filtros repetidos', () => {
   });
 });
 
-describe.only('6 - Apague um filtro de valor numérico ao clicar no ícone de X de um dos filtros e apague todas filtragens numéricas simultaneamente ao clicar em outro botão de Remover todas filtragens', () => {
+describe('6 - Apague um filtro de valor numérico ao clicar no ícone de X de um dos filtros e apague todas filtragens numéricas simultaneamente ao clicar em outro botão de Remover todas filtragens', () => {
   beforeAll(mockFetch);
   beforeEach(cleanup);
 
