@@ -42,40 +42,33 @@ function Filters() {
     });
   };
 
-  const handleRemoveAllFilters = () => {
-    setFilterByNumericValues([]);
-    setColumnFilter([
-      'population',
-      'orbital_period',
-      'diameter',
-      'rotation_period',
-      'surface_water',
-    ]);
-  };
-
   return (
-    <section>
+    <>
       {
         filterByNumericValues.length > 0
         && filterByNumericValues.map((filter) => (
-          <div key={ filter.column } data-testid="filter">
+          <div
+            className="d-flex justify-content-center"
+            key={ filter.column }
+            data-testid="filter"
+          >
             <p>
               {`${filter.column} ${filter.comparison} ${filter.value}`}
             </p>
             <button
+              className="btn btn-warning btn-sm"
               value={ filter.column }
               onClick={ handleRemoveFilter }
               type="button"
             >
-              X
-
+              x
             </button>
           </div>
         ))
       }
-      <label htmlFor="columnSort">
-        Ordenar
+      <div className="col-auto">
         <select
+          className="form-select"
           id="columnSort"
           data-testid="column-sort"
           name="column"
@@ -83,52 +76,53 @@ function Filters() {
           onChange={ handleSortFilter }
         >
           <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
+          <option value="orbital_period">orbital period</option>
           <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          <option value="rotation_period">rotation period</option>
+          <option value="surface_water">surface water</option>
         </select>
-      </label>
-      <div>
-        <label htmlFor="asc">
-          Crescente
-          <input
-            type="radio"
-            id="asc"
-            name="sort"
-            data-testid="column-sort-input-asc"
-            value="ASC"
-            onClick={ handleSortFilter }
-          />
-        </label>
-        <label htmlFor="desc">
-          Decrescente
-          <input
-            type="radio"
-            id="desc"
-            name="sort"
-            data-testid="column-sort-input-desc"
-            value="DESC"
-            onClick={ handleSortFilter }
-          />
-        </label>
+        <div />
+        <div className="form-check form-check-inline">
+          <label htmlFor="asc">
+            Ascendent
+            <input
+              className="form-check-input"
+              type="radio"
+              id="asc"
+              name="sort"
+              data-testid="column-sort-input-asc"
+              value="ASC"
+              onClick={ handleSortFilter }
+            />
+          </label>
+        </div>
+        <div className="form-check form-check-inline">
+          <label htmlFor="desc">
+            Descendent
+            <input
+              className="form-check-input"
+              type="radio"
+              id="desc"
+              name="sort"
+              data-testid="column-sort-input-desc"
+              value="DESC"
+              onClick={ handleSortFilter }
+            />
+          </label>
+        </div>
       </div>
-      <button
-        type="button"
-        data-testid="column-sort-button"
-        onClick={ handleSetOrder }
-      >
-        Ordenar
+      <div className="col-auto">
+        <button
+          type="button"
+          className="btn btn-warning"
+          data-testid="column-sort-button"
+          onClick={ handleSetOrder }
+        >
+          Sort
 
-      </button>
-      <button
-        type="button"
-        data-testid="button-remove-filters"
-        onClick={ handleRemoveAllFilters }
-      >
-        Remover Filtros
-      </button>
-    </section>
+        </button>
+      </div>
+    </>
   );
 }
 

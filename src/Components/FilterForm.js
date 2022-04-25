@@ -1,5 +1,7 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
+import Filters from './Filters';
 
 function FilterForm() {
   const {
@@ -8,6 +10,7 @@ function FilterForm() {
     numericFilter,
     columnFilter,
     setColumnFilter,
+    setFilterByNumericValues,
   } = useContext(AppContext);
 
   const [inputValues, setInputValues] = useState({
@@ -24,6 +27,17 @@ function FilterForm() {
     });
   };
 
+  const handleRemoveAllFilters = () => {
+    setFilterByNumericValues([]);
+    setColumnFilter([
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ]);
+  };
+
   const { column, comparison, value } = inputValues;
 
   const handleFilterButton = () => {
@@ -33,21 +47,27 @@ function FilterForm() {
   };
 
   return (
-    <>
-      <label htmlFor="filterInput">
-        Pesquisar Planetas
-        <input
-          id="filterInput"
-          value={ filterByName.name }
-          data-testid="name-filter"
-          type="text"
-          onChange={ handleFilterInput }
-        />
-      </label>
-      <form>
-        <label htmlFor="column">
-          Coluna
+    <section>
+      <div className="d-flex justify-content-center mb-3">
+        <label
+          htmlFor="filterInput"
+          className="form-label"
+        >
+          Search Planets
+          <input
+            className="form-control"
+            id="filterInput"
+            value={ filterByName.name }
+            data-testid="name-filter"
+            type="text"
+            onChange={ handleFilterInput }
+          />
+        </label>
+      </div>
+      <form className="d-flex justify-content-center row g-3">
+        <div className="col-auto">
           <select
+            className="form-select"
             id="column"
             data-testid="column-filter"
             name="column"
@@ -60,22 +80,24 @@ function FilterForm() {
               ))
             }
           </select>
-        </label>
-        <label htmlFor="comparison">
+        </div>
+        <div className="col-auto">
           <select
+            className="form-select"
             id="comparison"
             data-testid="comparison-filter"
             name="comparison"
             value={ comparison }
             onChange={ handleFilterForm }
           >
-            <option value="maior que">maior que</option>
-            <option value="igual a">igual a</option>
-            <option value="menor que">menor que</option>
+            <option value="maior que">bigger than</option>
+            <option value="igual a">equals</option>
+            <option value="menor que">smaller than</option>
           </select>
-        </label>
-        <label htmlFor="value">
+        </div>
+        <div className="col-auto mb-3">
           <input
+            className="form-control"
             type="number"
             id="value"
             data-testid="value-filter"
@@ -83,16 +105,30 @@ function FilterForm() {
             value={ value }
             onChange={ handleFilterForm }
           />
-        </label>
-        <button
-          type="button"
-          data-testid="button-filter"
-          onClick={ handleFilterButton }
-        >
-          Filtrar
-        </button>
+        </div>
+        <div className="col-auto">
+          <button
+            className="btn btn-warning"
+            type="button"
+            data-testid="button-filter"
+            onClick={ handleFilterButton }
+          >
+            Filter
+          </button>
+        </div>
+        <div className="col-auto">
+          <button
+            className="btn btn-warning"
+            type="button"
+            data-testid="button-remove-filters"
+            onClick={ handleRemoveAllFilters }
+          >
+            Remove Filters
+          </button>
+        </div>
+        <Filters />
       </form>
-    </>
+    </section>
   );
 }
 

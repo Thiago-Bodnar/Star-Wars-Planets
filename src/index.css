@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Starjedi';
-  src: url('./fonts/Starjedi.ttf');
+  src: url('./fonts/Starjedi.ttf') format('truetype');
 }
 
 body {
@@ -8,10 +8,10 @@ body {
   background-color: rgb(0, 0, 0);
 }
 
-th {
+th, label {
   color: yellow;
 }
-td {
+td, p {
   color: white;
 }
 
