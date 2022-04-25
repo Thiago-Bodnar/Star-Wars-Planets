@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Table() {
   const {
@@ -7,9 +8,9 @@ function Table() {
   } = useContext(AppContext);
 
   return (
-    <div>
+    <div className="table-responsive">
 
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <th>Name</th>
